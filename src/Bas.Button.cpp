@@ -1,10 +1,10 @@
 /*
-  Button.h - Library for a debounced button that can call calllbacks on rising or falling action.
+  Bas.Button.h - Library for a debounced button that can call calllbacks on rising or falling action.
   Created by Bas Paap, August 2023.
   Released into the public domain.
 */
 
-#include "Button.h"
+#include "Bas.Button.h"
 
 namespace Bas
 {
