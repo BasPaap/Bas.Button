@@ -22,6 +22,17 @@ void setup() {
 void loop() {
     // read the state of the switch into a local variable:
     button.update();    // The button needs to be updated on each loop to be responsive.
+
+    Serial.print("Button state: ");
+
+    if (button.getState() == HIGH)
+    {
+        Serial.println("pressed.");
+    }
+    else
+    {
+        Serial.println("not pressed.");
+    }
 }
 
 /// <summary>

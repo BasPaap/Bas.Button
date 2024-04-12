@@ -58,6 +58,12 @@ namespace Bas
 		/// Updates the Button state. This method should be called once per loop.
 		/// </summary>
 		void update();
+
+		/// <summary>
+		/// Returns the current button state.
+		/// </summary>
+		/// <returns>The current button state. This is either HIGH or LOW.</returns>
+		int getState();
 	};
 }
 
