@@ -38,7 +38,7 @@ void loop() {
 /// <summary>
 /// This method will be called when the pushbutton is pushed.
 /// </summary>
-void unButtonPressed()
+void onButtonPressed()
 {
     Serial.println("Button pushed down.");
 }
@@ -46,7 +46,7 @@ void unButtonPressed()
 /// <summary>
 /// This method will be called when the pushbutton is released.
 /// </summary>
-void unButtonReleased()
+void onButtonReleased()
 {
     Serial.println("Button released.");
 }
