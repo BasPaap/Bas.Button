@@ -8,7 +8,7 @@
 
 namespace Bas
 {
-	Button::Button(int pin, unsigned long debounceDelay, LogLevel logLevel = LogLevel::none) : pin{ pin }, debounceDelay{ debounceDelay }, risingCallback{ NULL }, fallingCallback{ NULL }, logLevel { logLevel }
+	Button::Button(int pin, unsigned long debounceDelay, LogLevel logLevel) : pin{ pin }, debounceDelay{ debounceDelay }, risingCallback{ NULL }, fallingCallback{ NULL }, logLevel { logLevel }
 	{
 	}
 
