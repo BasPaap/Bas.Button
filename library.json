@@ -8,6 +8,10 @@
       "type": "git",
       "url": "https://github.com/BasPaap/Bas.Button"
     },
+    "dependencies":
+    {
+        "baspaap/Bas.CallbackCaller": "^1.0.0"
+    },
     "authors":
     [
       {

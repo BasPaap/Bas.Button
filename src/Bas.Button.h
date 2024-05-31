@@ -12,6 +12,7 @@
 #else
 #include "WProgram.h"
 #endif
+#include <CallbackCaller.h>
 namespace Bas
 {
 	/// <summary>
@@ -20,16 +21,19 @@ namespace Bas
 	class Button
 	{
 	public:
-		enum class LogLevel { none = 0, normal };
-	
+		enum class LogLevel
+		{
+			none = 0,
+			normal
+		};
+
 	private:
-		using CallbackPointer = void(*)();
 		int pin;
 		int lastDebouncedButtonState = HIGH;
 		unsigned long lastDebounceTime;
 		unsigned long debounceDelay;
-		CallbackPointer risingCallback;
-		CallbackPointer fallingCallback;
+		CallbackCaller risingCallbackCaller;
+		CallbackCaller fallingCallbackCaller;
 		int debouncedState;
 		LogLevel logLevel;
 
@@ -45,14 +49,30 @@ namespace Bas
 		/// Tell the button which callback to call when the signal falls (in other words, when the button is pressed).
 		/// </summary>
 		/// <param name="fallingCallback">The callback to call when the button is pressed.</param>
-		void begin(CallbackPointer fallingCallback);
+		// template <typename Function>
+		// void begin(Function fallingCallback)
+		// {
+		// 	this->begin(fallingCallback, nullptr);
+		// }
 
 		/// <summary>
 		/// Tell the button which callback to call when the signal falls (when the button is pressed) or rises (when the button is released).
 		/// </summary>
 		/// <param name="fallingCallback">The callback to call when the button is pressed.</param>
 		/// <param name="risingCallback">The callback to call when the button is released.</param>
-		void begin(CallbackPointer fallingCallback, CallbackPointer risingCallback);
+		template <typename Function>
+		void begin(Function fallingCallback, Function risingCallback = []{})
+		{
+			if (this->logLevel == LogLevel::normal)
+			{
+				Serial.print("Initializing button on pin ");
+				Serial.println(this->pin);
+			}
+
+			this->fallingCallbackCaller.begin(fallingCallback);
+			this->risingCallbackCaller.begin(risingCallback);
+			pinMode(this->pin, INPUT_PULLUP);
+		}
 
 		/// <summary>
 		/// Updates the Button state. This method should be called once per loop.
@@ -60,12 +80,11 @@ namespace Bas
 		void update();
 
 		/// <summary>
-		/// Returns the current button state.
+		/// Returns a boolean that specifies if the button is pressed.
 		/// </summary>
-		/// <returns>The current button state. This is either HIGH or LOW.</returns>
-		int getState();
+		/// <returns>A boolean that specifies if the button is pressed.</returns>
+		bool isPressed();
 	};
 }
 
 #endif
-

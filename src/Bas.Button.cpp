@@ -8,26 +8,8 @@
 
 namespace Bas
 {
-	Button::Button(int pin, unsigned long debounceDelay, LogLevel logLevel) : pin{ pin }, debounceDelay{ debounceDelay }, risingCallback{ NULL }, fallingCallback{ NULL }, logLevel { logLevel }
+	Button::Button(int pin, unsigned long debounceDelay, LogLevel logLevel) : pin{ pin }, debounceDelay{ debounceDelay }, logLevel { logLevel }
 	{
-	}
-
-	void Button::begin(CallbackPointer fallingCallback)
-	{
-		this->begin(fallingCallback, NULL);
-	}
-
-	void Button::begin(CallbackPointer fallingCallback, CallbackPointer risingCallback)
-	{
-		if (this->logLevel == LogLevel::normal)
-		{
-			Serial.print("Initializing button on pin ");
-			Serial.println(this->pin);
-		}
-
-		this->risingCallback = risingCallback;
-		this->fallingCallback = fallingCallback;
-		pinMode(this->pin, INPUT_PULLUP);
 	}
 
 	void Button::update()
@@ -45,31 +27,31 @@ namespace Bas
 				this->debouncedState = currentButtonState;
 
 				// Call the appropriate callback function
-				if (this->risingCallback != NULL && currentButtonState == HIGH)
+				if (currentButtonState == HIGH)
 				{
 					if (this->logLevel == LogLevel::normal)
 					{
 						Serial.println("Button debounced on HIGH.");
 					}
 
-					this->risingCallback();
+					this->risingCallbackCaller.call();
 				}
 
-				if (this->fallingCallback != NULL && currentButtonState == LOW)
+				if (currentButtonState == LOW)
 				{
 					if (this->logLevel == LogLevel::normal)
 					{
 						Serial.println("Button debounced on LOW.");
 					}
 
-					this->fallingCallback();
+					this->fallingCallbackCaller.call();
 				}
 			}
 		}
 	}
 
-	int Button::getState()
+	bool Button::isPressed()
 	{
-		return this->debouncedState;
+		return this->lastDebouncedButtonState == LOW;
 	}
 }
