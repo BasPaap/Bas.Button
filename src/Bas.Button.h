@@ -72,6 +72,7 @@ namespace Bas
 			this->fallingCallbackCaller.begin(fallingCallback);
 			this->risingCallbackCaller.begin(risingCallback);
 			pinMode(this->pin, INPUT_PULLUP);
+			lastDebouncedButtonState = digitalRead(this->pin);
 		}
 
 		/// <summary>
